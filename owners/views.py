@@ -16,7 +16,7 @@ class OwnerListView(View):
             email = data["email"],
             age = data["age"],
         )
-        )
+        
         return HttpResponse(201)
    
     def get(self, request):
