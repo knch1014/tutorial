@@ -23,7 +23,6 @@ class OwnerListView(View):
         results = []
 
         for owner in owners:
-         
             dogs=list(Dog.objects.filter(owner=owner).values("name","age"))
             results.append(
                 {
