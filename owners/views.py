@@ -1,9 +1,9 @@
-from .models import Owner, Dog
+import json
 
 from django.views import View
 from django.http import JsonResponse, HttpResponse
 
-import json
+from .models import Owner, Dog
 
 # Create your views here.
 
@@ -19,19 +19,9 @@ class OwnerListView(View):
         return JsonResponse({'Message':'Created'}, status=201)
    
     def get(self, request):
-        owners = Owner.objects.all()
-        results = []
+       
+        results = [{"name" : owner.name, "email" : owner.email, "age" : owner.age, "dogs" : [{"name" : dog.name, "age" : dog.age} for dog in owner.owners.all()]} for owner in Owner.objects.all()]
 
-        for owner in owners:
-            dogs=list(Dog.objects.filter(owner=owner).values("name","age"))
-            results.append(
-                {
-                    "name" : owner.name,
-                    "email" : owner.email,
-                    "age" : owner.age,
-                    "dogs" : dogs
-                }
-            )
         return JsonResponse({'result':results}, status=200)
 
 class DogListView(View):
@@ -47,17 +37,9 @@ class DogListView(View):
 
 
     def get(self, request):
-        dogs = Dog.objects.all()
-        results = []
+       
+        results = [{'name' : dog.name, 'age' : dog.age, 'owner' :[{'name' : dog.owner.name}]} for dog in Dog.objects.all()]
 
-        for dog in dogs:
-            results.append(
-                {
-                    "name" : dog.name,
-                    "owner" : dog.owner.name,
-                    "age" : dog.age,
-                }
-            )
         return JsonResponse({'result':results}, status=200)
             
 

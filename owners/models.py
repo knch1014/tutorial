@@ -13,7 +13,7 @@ class Owner(models.Model):
 class Dog(models.Model):
     name = models.CharField(max_length=45)
     age = models.IntegerField(default=0)
-    owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name = 'owners')
 
     class Meta:
         db_table = 'dogs'
